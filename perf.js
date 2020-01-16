@@ -9,6 +9,10 @@ var globalIndex = 0;
 
 function generateApi() {
 
+    // [Notice] 管理上报所需的配置参数&&函数
+    // global包含：
+    // - defaultGlobal 
+    // - privateGlobal
     // 所有变量和函数定义在闭包环境，为了支持同时手动上报和自动上报功能
     var _global = util.mergeGlobal(util.initGlobal(), {
         hasStableFound: false
@@ -16,6 +20,7 @@ function generateApi() {
 
     _global.globalIndex = 'perf-' + globalIndex++;
 
+    // [Notice] 记录节点变更时间 && start节点开始经过的时间
     util.watchDomUpdate(_global);
 
     function runOnPageStable() {
@@ -243,6 +248,7 @@ function generateApi() {
         overrideRequest: overrideRequest,
         recordFirstScreenInfo: recordFirstScreenInfo,
         watchError: watchError,
+        // [Notice] 此处追踪global -> 1
         global: _global
     };
 }
@@ -250,6 +256,7 @@ function generateApi() {
 module.exports = {
     auto: function (userConfig) {
         var go = function () {
+            // [Notice] API包含什么见上面👆return内容
             var api = generateApi('auto');
             api.global.reportDesc = 'auto-perf';
             api.watchError();

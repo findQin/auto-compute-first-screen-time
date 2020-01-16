@@ -682,12 +682,13 @@ module.exports = {
 
     mergeUserConfig: function (_global, userConfig) {
         if (userConfig) {
+            // [Notice] 注入字段检查
             for (var userConfigKey in userConfig) {
                 if (['watingTimeWhenDefineStaticPage', 'onReport', 'onStableStatusFound', 'renderTimeAfterGettingData', 'onAllXhrResolved', 'onNavigationStartChange', 'watchPerfStartChange', 'forcedNavStartTimeStamp', 'delayReport', 'navigationStartChangeTag', 'jsonpFilter'].indexOf(userConfigKey) !== -1) {
                     _global[userConfigKey] = userConfig[userConfigKey];
                 }
             }
-
+            // [Notice] 请求配置修改（包含|不包含）仅增加
             var requestConfig = userConfig.request || userConfig.xhr;
             if (requestConfig) {
                 if (requestConfig.limitedIn) {
@@ -697,7 +698,7 @@ module.exports = {
                     _global.request.exclude = _global.request.exclude.concat(requestConfig.exclude);
                 }
             }
-
+            // [Notice] 图片判断修改（仅增加）
             if (userConfig.img) {
                 if (typeof userConfig.img === 'object' && typeof userConfig.img.test === 'function') {
                     _global.img.push(userConfig.img);
@@ -990,7 +991,7 @@ module.exports = {
 
                 global.errorMessages.push(result);
             };
-
+            // [Notice] 使用addEventListener error进行错误监控
             window.addEventListener('error', global._errorWatcher);
         }
     },

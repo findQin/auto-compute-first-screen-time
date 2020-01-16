@@ -4,6 +4,7 @@
  * @date 2018/02/22
  */
 
+// [Notice] 兼容性检查 - 基础产品更慎重考虑运行环境(不运行也不能挂)
 var supportQuerySelector = !!document.querySelector;
 var supportTiming = window.performance && window.performance.timing;
 var supportPerformance = window.performance && window.performance.getEntries && typeof window.performance.getEntries === 'function' && (window.performance.getEntries() instanceof Array);
@@ -36,6 +37,11 @@ var generateOutput = function(perf, dot) {
             forcedType = options.type;
         }
 
+        // [Notice] 调用时支持三种模式 auto perf dot
+        // # 实际支持模式
+        // - performance
+        // - dot 打点
+        // - 不记录
         if (forcedType !== 'auto' && forcedType !== 'perf' && forcedType !== 'dot') {
             errorlog('[auto-compute-first-screen-time] error message: config option of "type" should be one of values as below: "auto/perf/dot"');
             return;
